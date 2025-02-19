@@ -1,0 +1,11 @@
+# https://taskfile.dev/usage/
+version: '3'
+tasks:
+  default: echo hi task
+
+  # http://localhost:8787
+  dev: bun run dev
+  # https://hello-hono-basic.shareup.workers.dev/
+  dep: bun run deploy
+
+  wrangler: bunx wrangler --help

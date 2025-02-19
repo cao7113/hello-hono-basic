@@ -1,14 +1,17 @@
 # https://taskfile.dev/usage/
 version: '3'
 tasks:
-  default: echo hi task
+  default: bun test
 
   # http://localhost:8787
   dev: bun run dev
-  # https://hello-hono-basic.shareup.workers.dev/
+  # https://hello-hono.shareup.workers.dev/
   dep: bun run deploy
 
+  # https://developers.cloudflare.com/workers/wrangler/
   wrangler: bunx wrangler --help
 
   setup: |
     bun add --dev @cloudflare/workers-types
+    bun add -D @cloudflare/vitest-pool-workers
+    bun add -D vitest

@@ -3,7 +3,7 @@
 ## Useful Links
 
 - [Hono Basic Documentation](https://hono.dev/docs/getting-started/basic)
-- [Live Demo](https://hello-hono-basic.shareup.workers.dev/)
+- [Live Demo](https://hello-hono.shareup.workers.dev/)
 - [Src](https://github.com/honojs/examples/blob/main/basic/package.json)
 
 ## Get Started
@@ -19,4 +19,4 @@ bun run deploy
 ## Swagger UI
 
 - https://hono.dev/examples/swagger-ui
-- https://hello-hono-basic.shareup.workers.dev/ui
+- https://hello-hono.shareup.workers.dev/ui

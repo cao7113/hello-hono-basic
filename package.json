@@ -1,5 +1,5 @@
 {
-  "name": "hello-hono-basic",
+  "name": "hello-hono",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify"
@@ -9,7 +9,9 @@
     "hono": "^4.7.2"
   },
   "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.7.0",
     "@cloudflare/workers-types": "^4.20250214.0",
+    "vitest": "^3.0.6",
     "wrangler": "^3.109.2"
   }
 }

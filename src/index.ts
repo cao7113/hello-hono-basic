@@ -6,13 +6,8 @@ import { upgradeWebSocket } from "hono/cloudflare-workers";
 
 const app = new Hono();
 
-app.get("/", (c) => {
-  // plain text response
-  return c.text("Hello Hono!");
-});
-
 // Use the middleware to serve Swagger UI at /ui
-app.get("/ui", swaggerUI({ url: "/doc" }));
+app.get("/", swaggerUI({ url: "/doc" }));
 
 app.get("/doc", (c) => {
   // application/json Response (Swagger JSON)
@@ -23,50 +18,12 @@ app.get("/doc", (c) => {
       version: "1.0.0",
     },
     paths: {
-      "/": {
-        get: {
-          summary: "Get home info",
-          responses: {
-            "200": {
-              description: "Home info",
-              content: {
-                "text/plain": {
-                  schema: {
-                    type: "string",
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
       "/api": {
         get: {
           summary: "Get API status",
           responses: {
             "200": {
               description: "API status",
-              content: {
-                "application/json": {
-                  schema: {
-                    type: "object",
-                    properties: {
-                      ok: { type: "boolean" },
-                      message: { type: "string" },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-      "/api/hello": {
-        get: {
-          summary: "Say Hello",
-          responses: {
-            "200": {
-              description: "Hello message",
               content: {
                 "application/json": {
                   schema: {
@@ -103,6 +60,27 @@ app.get("/doc", (c) => {
           },
         },
       },
+      "/api/hello": {
+        get: {
+          summary: "Say Hello",
+          responses: {
+            "200": {
+              description: "Hello message",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      ok: { type: "boolean" },
+                      message: { type: "string" },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     },
   });
 });
@@ -115,18 +93,23 @@ app.get("/api", (c) => {
   });
 });
 
-app.get("/api/hello", (c) => {
-  return c.json({
-    ok: true,
-    message: "Hello Hono!",
-  });
-});
-
 app.get("/api/ping", (c) => {
   return c.json({
     ok: true,
-    message: "Pong!",
+    message: "Pong replied!",
   });
+});
+
+app.get("/api/hello", (c) => {
+  return c.json({
+    ok: true,
+    message: "Hello replied!",
+  });
+});
+
+app.get("/hello", (c) => {
+  // plain text response
+  return c.text("Hello Hono!");
 });
 
 app.get("/posts/:id", (c) => {
@@ -164,6 +147,7 @@ app.get("/admin", (c) => {
   return c.text("You are authorized!");
 });
 
+// https://hono.dev/docs/getting-started/basic#adapter
 // There are Adapters for platform-dependent functions, e.g., handling static files or WebSocket. For example, to handle WebSocket in Cloudflare Workers, import hono/cloudflare-workers.
 app.get(
   "/ws",
@@ -183,7 +167,6 @@ app.get(
   })
 );
 
-// platform-dependent functions
 app.get("/cf-works", (c) => c.text("Hello Cloudflare Workers!"));
 
 export default app;

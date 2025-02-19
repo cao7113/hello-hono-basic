@@ -9,3 +9,6 @@ tasks:
   dep: bun run deploy
 
   wrangler: bunx wrangler --help
+
+  setup: |
+    bun add --dev @cloudflare/workers-types

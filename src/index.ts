@@ -1,16 +1,110 @@
 import { Hono } from "hono";
+import { swaggerUI } from "@hono/swagger-ui";
 import { html } from "hono/html";
 import { basicAuth } from "hono/basic-auth";
 import { upgradeWebSocket } from "hono/cloudflare-workers";
-
-// todo try bear auth and jwt
-// todo add swagger-ui
 
 const app = new Hono();
 
 app.get("/", (c) => {
   // plain text response
   return c.text("Hello Hono!");
+});
+
+// Use the middleware to serve Swagger UI at /ui
+app.get("/ui", swaggerUI({ url: "/doc" }));
+
+app.get("/doc", (c) => {
+  // application/json Response (Swagger JSON)
+  return c.json({
+    openapi: "3.0.0",
+    info: {
+      title: "Hello Hono API",
+      version: "1.0.0",
+    },
+    paths: {
+      "/": {
+        get: {
+          summary: "Get home info",
+          responses: {
+            "200": {
+              description: "Home info",
+              content: {
+                "text/plain": {
+                  schema: {
+                    type: "string",
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      "/api": {
+        get: {
+          summary: "Get API status",
+          responses: {
+            "200": {
+              description: "API status",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      ok: { type: "boolean" },
+                      message: { type: "string" },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      "/api/hello": {
+        get: {
+          summary: "Say Hello",
+          responses: {
+            "200": {
+              description: "Hello message",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      ok: { type: "boolean" },
+                      message: { type: "string" },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      "/api/ping": {
+        get: {
+          summary: "Ping the API",
+          responses: {
+            "200": {
+              description: "Pong message",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      ok: { type: "boolean" },
+                      message: { type: "string" },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
 });
 
 app.get("/api", (c) => {
@@ -25,6 +119,13 @@ app.get("/api/hello", (c) => {
   return c.json({
     ok: true,
     message: "Hello Hono!",
+  });
+});
+
+app.get("/api/ping", (c) => {
+  return c.json({
+    ok: true,
+    message: "Pong!",
   });
 });
 
@@ -86,3 +187,8 @@ app.get(
 app.get("/cf-works", (c) => c.text("Hello Cloudflare Workers!"));
 
 export default app;
+
+// export default {
+//   fetch: app.fetch,
+//   scheduled: async (batch, env) => {},
+// }
